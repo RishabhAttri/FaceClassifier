@@ -4,7 +4,6 @@ cap = cv2.VideoCapture(0)
 face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_alt.xml")
 while True:
     ret, frame = cap.read()
-    
     if ret == False:
         continue
     flipHorizontal = cv2.flip(frame, 1)
