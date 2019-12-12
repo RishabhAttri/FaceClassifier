@@ -45,5 +45,36 @@ def KNN(input_row, k):
 
 # Now we need to extract the face section from the video
 
+cap = cv2.VideoCapture(0)
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_alt.xml')
 
+
+skip = 1
+face_section = 0
+offset = 0
+while True:
+    ret, frame = cap.read()
+
+    if ret == False:
+        continue
+    flipHorizontal = cv2.flip(frame,1)
+    faces = face_cascade.detectMultiScale(flipHorizontal,1.3,5)
+    for (x,y,w,h) in faces:
+        cv2.rectangle(flipHorizontal,(x,y),(x+w,y+h),(255,255,0),2)
+        offset = 10
+        face_section = flipHorizontal[y-offset:y+h+offset, x-offset:x+w+offset]
+        face_section = cv2.resize(face_section,(100,100))
+    cv2.imshow("Video Frame",flipHorizontal)
+    cv2.imshow("Nothing",face_section)
+    if skip%10 == 0:
+        faceForKNN = np.asarray(face_section)
+        faceForKNN = faceForKNN.reshape(30000,)
+        print(faceForKNN.shape)
+    skip += 1
+    key_pressed = cv2.waitKey(1) & 0xFF
+
+    if key_pressed == ord('q'):
+        break
+cap.release()
+cv2.destroyAllWindows()
 
