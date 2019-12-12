@@ -4,6 +4,7 @@
 
 from os import listdir
 import numpy as np
+import cv2
 
 path = './data/'
 dir_list = listdir(path)
@@ -31,18 +32,18 @@ def KNN(input_row, k):
     for i in range(data_array.shape[0]):
         dist = 0
         for targetRow in data_array[i]:
-            for i in range(targetRow.size):
-                dist += abs((input_row[i]-targetRow[i]))
-        dist = dist/data_array[i].shape[0]
-        match_rows.append((dist,i))
-        match_rows = sorted(match_rows)
-        match_rows = match_rows[:k]
-        pred = match_rows[:,1]
-        print(pred)
-        return pred
+            for j in range(targetRow.size):
+                dist += abs((input_row[j]-targetRow[j]))
+            match_rows.append((dist,i))
+    match_rows = sorted(match_rows)
+    match_rows = match_rows[:k]
+    pred = match_rows[:,1]
+    print(pred)
+    return pred
 
-        
+# KNN is completed
 
-    
+# Now we need to extract the face section from the video
+
 
 
